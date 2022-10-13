@@ -1,0 +1,15 @@
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+.images img {
+	border: 0.5px solid red;
+}
+
+input[type="checkbox"]:checked {
+	box-shadow: 0 0 0 3px orange;
+}
