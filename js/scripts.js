@@ -20,7 +20,7 @@ document.onreadystatechange = () => {
 	}
 	else {
 		if (galleryValue === null) {
-			localStorage.setItem('galleryValue', [])
+			localStorage.setItem('galleryValue', JSON.stringify([]))
 		}
 		console.log('loading')
 		console.log('scrips loading..');
@@ -29,22 +29,24 @@ document.onreadystatechange = () => {
 	}
 }
 
-function gallery(arrayOfPhotos) {
-
-}
-
 function fetchImage() {
-	let form = document.querySelector('form');
-	let images = document.querySelector('.result-from-flickr');
-	form.addEventListener('submit', function (e) {
+	let searchField = document.querySelector('.search-field');
+
+	let resultText;
+	let images = document.querySelector('.images');
+
+	searchField.addEventListener('submit', function (e) {
 		//Stops the form from autocomplete itself
 		e.preventDefault();
 
 		printImage(e.target[0].value).then(result => {
+
+			//Store our fetch in localstorage and then use this to draw our result out
+			localStorage.setItem('flickr-photos', JSON.stringify(result.photos.photo));
+			let photos = JSON.parse(localStorage.getItem('flickr-photos'));
+
 			let div;
-			let photos = result.photos.photo;
 			let img;
-			let searchField = document.querySelector('.search-field');
 			if (result.stat === 'ok') {
 				console.log('Okay, showing result: ')
 				console.log(photos)
@@ -53,41 +55,71 @@ function fetchImage() {
 				searchField.classList.add('hide');
 
 				//Loop through all 100 photos and create new IMG elements
+				if (photos.length !== 0) {
+					resultText = document.createElement('h2');
+					resultText.innerText = `Found ${photos.length}`
+					images.appendChild(resultText);
+					photos.forEach((photo, key) => {
 
-				photos.forEach((photo, key) => {
+						div = document.createElement('div');
+						div.setAttribute('class', 'image');
+						images.appendChild(div);
+						let divImage = document.querySelectorAll('.image');
+						img = document.createElement('img');
+						img.setAttribute("src", `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${'q'}.jpg`);
+						img.setAttribute('alt', `${photo.id}._q_.jpg`)
 
-					div = document.createElement('div');
-					div.setAttribute('class', 'image');
-					images.appendChild(div);
-					let divImage = document.querySelectorAll('.image');
-					img = document.createElement('img');
-					img.setAttribute("src", `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${'q'}.jpg`);
-					img.setAttribute('alt', `${photo.id}._q_.jpg`)
+						let checkBox = document.createElement('input');
+						checkBox.setAttribute('type', 'checkbox');
+						checkBox.setAttribute('id', key);
+						checkBox.setAttribute('class', 'checkbox');
+						checkBox.setAttribute('onchange', "checkUnCheck(this)")
+						checkBox.setAttribute('value', JSON.stringify([{
+							id: photo.id,
+							quality: 'q',
+							src: 'https://live.staticflickr.com/',
+							server: photo.server,
+						}]));
 
-					let checkBox = document.createElement('input');
-					checkBox.setAttribute('type', 'checkbox');
-					checkBox.setAttribute('id', key);
+						let label = document.createElement('label');
+						label.setAttribute('for', key);
 
-					let label = document.createElement('label');
-					label.setAttribute('for', key);
+						//What order I want the label + image should land on
+						divImage[key].appendChild(label);
+						label.appendChild(img);
+						label.appendChild(checkBox);
 
+					});
 
-					divImage[key].appendChild(label);
-					label.appendChild(img);
-					divImage[key].appendChild(checkBox);
+					let newSearchButton = document.createElement('button');
+					newSearchButton.setAttribute('type', 'button');
+					newSearchButton.setAttribute('onclick', 'newSearch()');
+					newSearchButton.setAttribute('class', 'new-search-button');
+					newSearchButton.innerText = 'New search';
+					images.appendChild(newSearchButton);
 
+					let createGalleryButton = document.createElement('input');
+					createGalleryButton.setAttribute('type', 'submit');
+					createGalleryButton.setAttribute('onsubmit', 'createGallery(e)');
+					createGalleryButton.setAttribute('class', 'show-gallery-button');
+					createGalleryButton.setAttribute('value', 'Show gallery');
+					images.appendChild(createGalleryButton);
+				}
+				else {
+					searchField.classList.add('show');
+					searchField.classList.remove('hide');
 
-				});
-
-				let arrayOfSavedPhotos = [];
+					resultText = document.createElement('h2');
+					resultText.setAttribute('class', 'nothing-returned');
+					resultText.innerText = `Found ${photos.length}, please search again`
+					searchField.appendChild(resultText);
+				}
 
 
 			}
 			else {
 				throw 'Hmmm something went wrong!'
 			}
-
-
 		})
 	})
 }
@@ -99,8 +131,54 @@ async function printImage(word) {
 }
 
 function scripts() {
-	console.log('scripts')
+	console.log('scripts loaded')
 	fetchImage()
+	createGallery()
 }
 
 
+function newSearch() {
+	localStorage.setItem('flickr-photos', JSON.stringify([]))
+	let photos = JSON.parse(localStorage.getItem('flickr-photos'));
+	console.log("amount of photos: ", photos.length)
+
+	let images = document.querySelector('.images');
+	let searchField = document.querySelector('.search-field');
+	let nothingReturnedText = document.querySelector('.nothing-returned');
+	if (nothingReturnedText !== null) {
+		nothingReturnedText.innerText = ""; // Remove anything child related to .nothing-returned h2 class
+	}
+	images.innerText = ""; // Remove anything child related to .images div
+	searchField.classList.remove('hide');
+	searchField.classList.add('show');
+}
+
+function createGallery() {
+	let galleryForm = document.querySelector('.result-from-flickr');
+	galleryForm.addEventListener('submit', function (e) {
+		e.preventDefault();
+		console.log('creating gallery....')
+		let checkboxes = document.querySelectorAll("input[type='checkbox']");
+		//Stops the form from autocomplete itself
+		for (let i = 0; i < checkboxes.length; i++) {
+			const element = checkboxes[i];
+			if (element.checked) {
+				localStorage.setItem('galleryValue', JSON.stringify(...localStorage.getItem('galleryValue')));
+			}
+		}
+
+	})
+}
+
+
+function checkUnCheck(e) {
+	let previousSibling = e.previousSibling;
+	if (e.checked) {
+		previousSibling.classList.add('checked')
+
+	}
+	else {
+		previousSibling.classList.remove('checked')
+
+	}
+}
