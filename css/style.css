@@ -18,7 +18,7 @@ html, body {
 
 }
 
-.loading h1 {
+.loading img {
 	font-size: inherit;
 	animation-name: pulse;
 	animation-duration: 4s;
@@ -83,6 +83,7 @@ html, body {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	flex-wrap: wrap;
 }
 
 .search-field label>span {
@@ -147,22 +148,27 @@ html, body {
 
 @keyframes pulse {
 	0% {
-		font-size: inherit;
+		width: 100%;
+		height: 100%;
 	}
 
 	25% {
-		font-size: 2.5rem;
+		width: 25%;
+		height: 25%;
 	}
 
 	50% {
-		font-size: 4rem;
+		width: 50%;
+		height: 50%;
 	}
 
 	75% {
-		font-size: 2.5rem;
+		width: 75%;
+		height: 75%;
 	}
 
 	100% {
-		font-size: 4rem;
+		width: 50%;
+		height: 50%;
 	}
 }
