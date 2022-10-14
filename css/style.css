@@ -6,13 +6,26 @@
 	display: block;
 }
 
-.images img {
+.result-from-flickr .images img {
 	border: 0.5px solid red;
 }
 
-.images img.checked {
+.result-from-flickr .images img.checked {
 	border: 0.5px solid green;
+}
 
+
+.btn.fetch-button {
+	pointer-events: none;
+	background-color: darkgrey;
+	border: 2px solid darkgrey;
+	transition: background-color 250ms;
+}
+
+.btn.fetch-button.active {
+	pointer-events: auto;
+	background-color: lightgray;
+	border: 2px solid lightgray;
 }
 
 .checkbox {
