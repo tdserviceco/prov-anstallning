@@ -1,6 +1,8 @@
 //Global variable
 let loading = document.querySelector('.loading');
 let galleryValue = localStorage.getItem('galleryValue');
+let galleryForm = document.querySelector('.result-from-flickr');
+let buttonsContainer = document.createElement('div');
 let searchField = document.querySelector('.search-field')
 let searchTextField = document.querySelector('#search');
 let submitFetchImageButton = document.querySelector('.fetch-button');
@@ -36,7 +38,7 @@ document.onreadystatechange = () => {
 function fetchImage() {
 	let resultText;
 	resultText = document.createElement('h2');
-	let images = document.querySelector('.images');
+	let images = document.querySelector('.images-container');
 
 	searchField.addEventListener('submit', function (e) {
 		//Stops the form from autocomplete itself
@@ -61,7 +63,7 @@ function fetchImage() {
 
 				//Loop through all X photos and create new IMG elements
 				if (photos.length !== 0) {
-
+					resultText.classList.add('result');
 					resultText.innerText = `Found ${photos.length}`;
 					images.appendChild(resultText);
 					photos.forEach((photo, key) => {
@@ -96,19 +98,24 @@ function fetchImage() {
 						label.appendChild(checkBox);
 					});
 
+					buttonsContainer.setAttribute('class', 'buttons-container');
+					galleryForm.appendChild(buttonsContainer);
+
+					let buttonContainerDiv = document.querySelector('.buttons-container');
+
 					let newSearchButton = document.createElement('button');
 					newSearchButton.setAttribute('type', 'button');
 					newSearchButton.setAttribute('onclick', 'newSearch()');
 					newSearchButton.setAttribute('class', 'btn new-search-button');
 					newSearchButton.innerText = 'New search';
-					images.appendChild(newSearchButton);
+					buttonContainerDiv.appendChild(newSearchButton);
 
 					let createGalleryButton = document.createElement('input');
 					createGalleryButton.setAttribute('type', 'submit');
 					createGalleryButton.setAttribute('onsubmit', 'setupGallery(e)');
 					createGalleryButton.setAttribute('class', 'btn show-gallery-button');
 					createGalleryButton.setAttribute('value', 'Show gallery');
-					images.appendChild(createGalleryButton);
+					buttonContainerDiv.appendChild(createGalleryButton);
 				}
 				else {
 					searchField.classList.add('show');
@@ -137,19 +144,24 @@ function newSearch() {
 	let photos = JSON.parse(localStorage.getItem('flickr-photos'));
 	console.log("amount of photos: ", photos.length)
 
-	let images = document.querySelector('.images');
-
+	let images = document.querySelector('.images-container');
+	let buttonsContainerDiv = document.querySelector('.buttons-container');
 	let nothingReturnedText = document.querySelector('.nothing-returned');
 	if (nothingReturnedText !== null) {
 		nothingReturnedText.innerText = ""; // Remove anything child related to .nothing-returned h2 class
 	}
-	images.innerText = ""; // Remove anything child related to .images div
+
+
+	// Remove anything child related to .images-container & buttons-container div
+	buttonsContainerDiv.innerText = "";
+	images.innerText = "";
+
+
 	searchField.classList.remove('hide');
 	searchField.classList.add('show');
 }
 
 function setupGallery() {
-	let galleryForm = document.querySelector('.result-from-flickr');
 	galleryForm.addEventListener('submit', function (e) {
 		document.title = 'Vanilla JS - Creating gallery'
 

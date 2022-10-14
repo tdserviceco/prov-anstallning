@@ -1,3 +1,30 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+	min-height: 100vh;
+}
+
+.loading {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: calc(100vh - 0.00625rem);
+
+}
+
+.loading h1 {
+	font-size: inherit;
+	animation-name: pulse;
+	animation-duration: 4s;
+	animation-iteration-count: infinite;
+}
+
 .hide {
 	display: none;
 }
@@ -6,20 +33,106 @@
 	display: block;
 }
 
-.result-from-flickr .images img {
-	border: 0.5px solid red;
+.gallery .images {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
 }
 
-.result-from-flickr .images img.checked {
-	border: 0.5px solid green;
+
+.gallery>button {
+	padding: 1rem;
+	margin: 1rem;
 }
 
+
+.gallery .images img {
+	margin: 1rem;
+}
+
+.result-from-flickr>.images-container {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+
+.result-from-flickr .images-container img {
+	margin: 0.3rem;
+	border: 0.313rem solid red;
+	transition: border 250ms;
+	cursor: pointer;
+}
+
+.result-from-flickr .images-container img.checked {
+	border: 0.313rem solid green;
+}
+
+.container {
+	padding: 2rem;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+.search-field label {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.search-field label>span {
+	padding: 0.5rem 1rem;
+	background-color: lightgray;
+	border: 1px solid lightgray;
+
+}
+
+.search-field label>input {
+	padding: 0.5rem 1rem;
+	border: 2px solid lightgray;
+	border-radius: 0;
+}
+
+.buttons-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+}
+
+.buttons-container .new-search-button,
+.buttons-container .show-gallery-button {
+	padding: 1rem;
+	margin: 0 0.5rem;
+}
+
+.result {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	width: 100%;
+	margin-bottom: 1rem;
+}
+
+.nothing-returned {
+	margin-top: 1rem;
+}
+
+.btn {
+	cursor: pointer;
+}
 
 .btn.fetch-button {
+	margin-top: 1rem;
+	padding: 0.5rem 1rem;
 	pointer-events: none;
 	background-color: darkgrey;
 	border: 2px solid darkgrey;
-	transition: background-color 250ms;
+	transition: background-color 500ms;
 }
 
 .btn.fetch-button.active {
@@ -30,4 +143,26 @@
 
 .checkbox {
 	display: none;
+}
+
+@keyframes pulse {
+	0% {
+		font-size: inherit;
+	}
+
+	25% {
+		font-size: 2.5rem;
+	}
+
+	50% {
+		font-size: 4rem;
+	}
+
+	75% {
+		font-size: 2.5rem;
+	}
+
+	100% {
+		font-size: 4rem;
+	}
 }

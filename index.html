@@ -11,29 +11,28 @@
 
 <body>
 
-	<main class="container">
+	<main>
 		<div class="loading hide">
-			Loading...
+			<h1>Loading...</h1>
 		</div>
-
-		<form class="hide search-field">
-			<label for="search">
-				<span>
-					Search
-				</span>
-				<input id="search">
-			</label>
-			<h2 class="nothing-returned"></h2>
-			<input type="submit" value="Fetch" class="btn fetch-button">
-		</form>
+		<div class="container">
+			<form class="hide search-field">
+				<label for="search">
+					<span>Search word</span>
+					<input id="search">
+				</label>
+				<h2 class="nothing-returned"></h2>
+				<input type="submit" value="Fetch" class="btn fetch-button">
+			</form>
 
 
-		<form class="result-from-flickr">
-			<div class="images"></div>
-		</form>
+			<form class="result-from-flickr">
+				<div class="images-container"></div>
+			</form>
 
-		<div class="gallery hide">
-			<h2>Creating gallery...</h2>
+			<div class="gallery hide">
+				<h2>Creating gallery...</h2>
+			</div>
 		</div>
 	</main>
 
