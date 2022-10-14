@@ -15,8 +15,8 @@ document.onreadystatechange = () => {
 		document.querySelector('.search-field').classList.add('show');
 
 		//Run all scripts 
-		console.log('complete')
-		scripts()
+		console.log('complete');
+		scripts();
 	}
 	else {
 		if (galleryValue === null) {
@@ -48,16 +48,16 @@ function fetchImage() {
 			let div;
 			let img;
 			if (result.stat === 'ok') {
-				console.log('Okay, showing result: ')
-				console.log(photos)
+				console.log('Okay, showing result: ');
+				console.log(photos);
 
 				searchField.classList.remove('show');
 				searchField.classList.add('hide');
 
-				//Loop through all 100 photos and create new IMG elements
+				//Loop through all X photos and create new IMG elements
 				if (photos.length !== 0) {
 					resultText = document.createElement('h2');
-					resultText.innerText = `Found ${photos.length}`
+					resultText.innerText = `Found ${photos.length}`;
 					images.appendChild(resultText);
 					photos.forEach((photo, key) => {
 
@@ -67,7 +67,7 @@ function fetchImage() {
 						let divImage = document.querySelectorAll('.image');
 						img = document.createElement('img');
 						img.setAttribute("src", `https://live.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_${'q'}.jpg`);
-						img.setAttribute('alt', `${photo.id}._q_.jpg`)
+						img.setAttribute('alt', `${photo.id}._q_.jpg`);
 
 						let checkBox = document.createElement('input');
 						checkBox.setAttribute('type', 'checkbox');
@@ -88,7 +88,6 @@ function fetchImage() {
 						divImage[key].appendChild(label);
 						label.appendChild(img);
 						label.appendChild(checkBox);
-
 					});
 
 					let newSearchButton = document.createElement('button');
@@ -111,14 +110,13 @@ function fetchImage() {
 
 					resultText = document.createElement('h2');
 					resultText.setAttribute('class', 'nothing-returned');
-					resultText.innerText = `Found ${photos.length}, please search again`
+					resultText.innerText = `Found ${photos.length}, please search again`;
 					searchField.appendChild(resultText);
 				}
 
-
 			}
 			else {
-				throw 'Hmmm something went wrong!'
+				throw 'Hmmm something went wrong!';
 			}
 		})
 	})
@@ -156,29 +154,29 @@ function newSearch() {
 function createGallery() {
 	let galleryForm = document.querySelector('.result-from-flickr');
 	galleryForm.addEventListener('submit', function (e) {
+
 		e.preventDefault();
 		console.log('creating gallery....')
 		let checkboxes = document.querySelectorAll("input[type='checkbox']");
-		//Stops the form from autocomplete itself
+		let selectedImages = [];
 		for (let i = 0; i < checkboxes.length; i++) {
 			const element = checkboxes[i];
 			if (element.checked) {
-				localStorage.setItem('galleryValue', JSON.stringify(...localStorage.getItem('galleryValue')));
+				console.log(JSON.parse(element.value))
+				selectedImages.push(element.value)
 			}
 		}
-
+		localStorage.setItem('galleryValue', selectedImages);
+		console.log(localStorage.getItem(selectedImages))
 	})
 }
-
 
 function checkUnCheck(e) {
 	let previousSibling = e.previousSibling;
 	if (e.checked) {
-		previousSibling.classList.add('checked')
-
+		previousSibling.classList.add('checked');
 	}
 	else {
-		previousSibling.classList.remove('checked')
-
+		previousSibling.classList.remove('checked');
 	}
 }
