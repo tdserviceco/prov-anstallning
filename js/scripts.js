@@ -1,4 +1,5 @@
 //Global variable
+
 let loading = document.querySelector('.loading');
 let galleryValue = localStorage.getItem('galleryValue');
 let galleryForm = document.querySelector('.result-from-flickr');
